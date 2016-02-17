@@ -1,10 +1,27 @@
 .searchclear {
     color: #ccc;
     cursor: pointer;
-    font-size: 14px;
-    height: 14px;
+    font-size: 100%;
     margin: auto;
     position: absolute!important;
     right: 10px;
     z-index: 99999999;
+    height: 1.5rem;
+    text-align: right;
+    width: 1.5rem;
 }
+
+.searchclear:before {
+    content: "\f217";
+    font-family: "foundation-icons";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    text-decoration: inherit;
+}
+
+

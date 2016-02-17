@@ -8,15 +8,16 @@ angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', func
     return {
         link: function (scope, elm, attr, ngModelCtrl) {
             var top = elm.height() / 2;
-            elm.wrap("<div style='position: relative'></div>");
+            elm.wrap("<div style='position: relative; width:100%'></div>");
             var btn = '<span id=' + Math.round(Math.random() * 1000000000) + ' class="searchclear ng-hide glyphicon glyphicon-remove-circle"></span>';
             var angularBtn = angular.element(btn);
             angularBtn.css('top', top);
             elm.after(angularBtn);
             //clear the input
             angularBtn.on("click", function () {
+                console.log(elm);
                 elm.val('').trigger("change");
-                $parse(attr.ngModel).assign(scope, null);
+                $parse(attr.ngModel).assign(scope, '');
                 scope.$apply();
             });
 
@@ -36,3 +37,4 @@ angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', func
         }
     };
 }]);
+
