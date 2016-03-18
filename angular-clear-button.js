@@ -6,16 +6,25 @@
 
 angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', function ($parse) {
     return {
+        scope:{
+            placeholder:'@'
+        },
         link: function (scope, elm, attr, ngModelCtrl) {
             var top = elm.height() / 2;
             elm.wrap("<div style=\"position: relative; width:100%\"></div>");
             var btn = '<span id=' + Math.round(Math.random() * 1000000000) + ' class="searchclear ng-hide glyphicon glyphicon-remove-circle"></span>';
             var angularBtn = angular.element(btn);
+            var label = angular.element('<label class="ss-input-field-label">'+scope.placeholder+'</label>');
             angularBtn.css('top', top);
+
+            if(elm.val().length == 0){
+                label.addClass('ng-hide');
+            }
+
             elm.after(angularBtn);
+            elm.after(label);
             //clear the input
             angularBtn.on("click", function () {
-                console.log(elm);
                 elm.val('').trigger("change");
                 $parse(attr.ngModel).assign(scope, '');
                 scope.$apply();
@@ -25,8 +34,12 @@ angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', func
             elm.bind('focus keyup change paste propertychange', function (blurEvent) {
                 if (elm.val() && elm.val().length > 0) {
                     angularBtn.removeClass("ng-hide");
+                    label.removeClass("ng-hide");
+                    elm.addClass('ss-input-field-filled');
                 } else {
                     angularBtn.addClass("ng-hide");
+                    label.addClass("ng-hide");
+                    elm.removeClass('ss-input-field-filled');
                 }
             });
             // remove  clear btn  on focus
@@ -37,4 +50,5 @@ angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', func
         }
     };
 }]);
+
 
