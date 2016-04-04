@@ -6,18 +6,20 @@
 
 angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', function ($parse) {
     return {
-        scope:{
-            placeholder:'@'
+        scope: {
+            placeholder: '@'
         },
         link: function (scope, elm, attr, ngModelCtrl) {
             var top = elm.height() / 2;
+            var useSmartLabel = typeof attr.notUseSmartLabel === 'undefined';
             elm.wrap("<div style=\"position: relative; width:100%\"></div>");
             var btn = '<span id=' + Math.round(Math.random() * 1000000000) + ' class="searchclear ng-hide glyphicon glyphicon-remove-circle"></span>';
             var angularBtn = angular.element(btn);
-            var label = angular.element('<label class="ss-input-field-label">'+scope.placeholder+'</label>');
+            if (useSmartLabel)
+                var label = angular.element('<label class="ss-input-field-label">' + scope.placeholder + '</label>');
             angularBtn.css('top', top);
 
-            if(elm.val().length == 0){
+            if (useSmartLabel && elm.val().length == 0) {
                 label.addClass('ng-hide');
             }
 
@@ -34,12 +36,16 @@ angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', func
             elm.bind('focus keyup change paste propertychange', function (blurEvent) {
                 if (elm.val() && elm.val().length > 0) {
                     angularBtn.removeClass("ng-hide");
-                    label.removeClass("ng-hide");
-                    elm.addClass('ss-input-field-filled');
+                    if (useSmartLabel) {
+                        label.removeClass("ng-hide");
+                        elm.addClass('ss-input-field-filled');
+                    }
                 } else {
                     angularBtn.addClass("ng-hide");
-                    label.addClass("ng-hide");
-                    elm.removeClass('ss-input-field-filled');
+                    if (useSmartLabel) {
+                        label.addClass("ng-hide");
+                        elm.removeClass('ss-input-field-filled');
+                    }
                 }
             });
             // remove  clear btn  on focus
@@ -50,5 +56,6 @@ angular.module('angular-clear-button', []).directive('clearBtn', ['$parse', func
         }
     };
 }]);
+
 
 
